@@ -1,12 +1,15 @@
 package com.chirikualii.materidb.data.repository
 
 import android.util.Log
+import com.chirikualii.materidb.data.local.MovieDatabase
+import com.chirikualii.materidb.data.local.MovieDatabaseImpl
+import com.chirikualii.materidb.data.local.entity.MovieEntity
 import com.chirikualii.materidb.data.model.Movie
+import com.chirikualii.materidb.data.model.MovieType
 import com.chirikualii.materidb.data.remote.ApiService
 import com.google.gson.Gson
 
-class MovieRepoImpl(
-    private val service: ApiService): MovieRepo {
+class MovieRepoImpl(private val service: ApiService, private val movieDbImpl: MovieDatabaseImpl): MovieRepo {
 
     override suspend fun getPopularMovie(): List<Movie> {
        try {
@@ -17,12 +20,28 @@ class MovieRepoImpl(
                val listData = listMovie?.results?.map {
                    Movie(
                        title = it.title,
-                       genre = it.releaseDate,
+                       releaseDate = it.releaseDate,
                        imagePoster = it.posterPath,
                        overview = it.overview,
                        backdrop = it.backdropPath
                    )
                }
+               val listMovieEntity = listMovie?.results?.map {
+                   MovieEntity(
+                       movieId = it.id.toString(),
+                       title =  it.title,
+                       releaseDate = it.releaseDate,
+                       imagePoster = it.posterPath,
+                       overview = it.overview,
+                       backdrop = it.backdropPath,
+                       typeMovie = MovieType.POPULAR
+                   )
+               }
+
+               listMovieEntity?.forEach {
+                    movieDbImpl.getDatabase().movieDao().insertMovie(it)
+               }
+
                Log.d(MovieRepoImpl::class.simpleName,
                    "getPopularMovie : ${Gson().toJsonTree(listData)}")
                return listData ?: emptyList()
@@ -46,7 +65,7 @@ class MovieRepoImpl(
                 val listData = listMovie?.results?.map {
                     Movie(
                         title = it.title,
-                        genre = it.releaseDate,
+                        releaseDate = it.releaseDate,
                         imagePoster = it.posterPath,
                         overview = it.overview,
                         backdrop = it.backdropPath
