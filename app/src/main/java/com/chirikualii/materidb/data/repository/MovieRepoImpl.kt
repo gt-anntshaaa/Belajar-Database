@@ -119,7 +119,8 @@ class MovieRepoImpl(private val service: ApiService, private val movieDbImpl: Mo
                    releaseDate = it.releaseDate,
                    imagePoster = it.imagePoster,
                    backdrop = it.backdrop,
-                   overview = it.overview
+                   overview = it.overview,
+                   bookmark = it.bookmark
                )
            }
            return listData
@@ -141,7 +142,8 @@ class MovieRepoImpl(private val service: ApiService, private val movieDbImpl: Mo
                     releaseDate = it.releaseDate,
                     imagePoster = it.imagePoster,
                     backdrop = it.backdrop,
-                    overview = it.overview
+                    overview = it.overview,
+                    bookmark = it.bookmark
                 )
             }
             return listData
