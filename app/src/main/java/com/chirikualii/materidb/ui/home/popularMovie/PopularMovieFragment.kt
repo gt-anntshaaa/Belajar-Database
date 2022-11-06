@@ -53,9 +53,6 @@ class PopularMovieFragment : Fragment() {
         }
     }
 
-    fun tes(){
-
-    }
 
 
 }

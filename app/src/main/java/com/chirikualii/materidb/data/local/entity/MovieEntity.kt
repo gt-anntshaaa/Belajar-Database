@@ -13,5 +13,8 @@ data class MovieEntity(
     @ColumnInfo(name = "backdrop_movie") val backdrop:String,
     @ColumnInfo(name= "overview_movie") val overview:String,
 
-    @ColumnInfo(name= "typeMovie") val typeMovie: String
+    @ColumnInfo(name= "typeMovie") val typeMovie: String,
+
+
+    @ColumnInfo(name = "bookmark") val bookmark: Int = 0
 )
